@@ -43,22 +43,38 @@
             })
             .then(response => response.json())
             .then(result => {
-                const directions = result;
-                console.log(result);
-                directionsService.route({
-                    origin: directions["origin"],
-                    destination: directions["destination"],
-                    travelMode: directions["method"],
-                    waypoints: directions["waypoints"]
-                }, function(response, status) {
-                    if (status === 'OK') {
-                    directionsRenderer.setDirections(response);
-                    } else {
-                    window.alert('Directions request failed due to ' + status);
-                    }
-                });
+                // const directions = result;
+                // console.log(result);
+                // directionsService.route({
+                //     origin: directions["origin"],
+                //     destination: directions["destination"],
+                //     travelMode: directions["method"],
+                //     waypoints: directions["waypoints"]
+                // }, function(response, status) {
+                //     if (status === 'OK') {
+                //     directionsRenderer.setDirections(response);
+                //     } else {
+                //     window.alert('Directions request failed due to ' + status);
+                //     }
+                // });
 
                 // directionsRenderer.setDirections(directions);
+                result.forEach(directions => {
+                    directionsService.route({
+                        origin: directions.origin,
+                        destination: directions.destination,
+                        travelMode: directions.method,
+                        waypoints: directions.waypoints
+                    }, function(response, status) {
+                        if (status === 'OK') {
+                            directionsRenderer = new google.maps.DirectionsRenderer();
+                            directionsRenderer.setDirections(response);
+                            directionsRenderer.setMap(map);
+                        } else {
+                            window.alert('Directions request failed due to ' + status);
+                        }
+                    });
+                });
             })  
             .catch(error => console.error('Error:', error));
         }

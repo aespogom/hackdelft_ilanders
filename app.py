@@ -12,7 +12,7 @@ def index():
 @app.route('/get_directions', methods=['GET'])
 def get_directions():
     routes = final_result()
-    print(routes)
+    google_routes = []
     for route in routes:
         mode = route[0]
         origin = route[1][0]
@@ -22,7 +22,12 @@ def get_directions():
             "location": r,
             "stopover": True
         } for r in route[1][1:-1]]
-        
+        google_routes.append({
+            "origin": origin,
+            "destination": destination,
+            "waypoints": waypoints,
+            "method": mode.upper()
+        })
         # directions_result = gmaps.directions(origin,
         #                                     destination,
         #                                     waypoints=waypoints,
@@ -33,12 +38,7 @@ def get_directions():
         #             destination: destination,
         #             waypoints: waypoints
         #         })
-    return jsonify({
-                "origin": origin,
-                "destination": destination,
-                "waypoints": waypoints,
-                "method": mode.upper()
-            })
+    return jsonify(google_routes)
 
 if __name__ == '__main__':
     app.run(debug=True)
