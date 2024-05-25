@@ -8,7 +8,7 @@ direction_list=read_file_directions("input_directions.txt")
 matrix_distances_walk = []
 matrix_distances_bike = []
 matrix_distances_car = []
-for x_axis, origin in enumerate(direction_list):
+for x_axis, origin in enumerate(direction_list[0:4]):
     matrix_distances_walk.append([])
     matrix_distances_bike.append([])
     matrix_distances_car.append([])
@@ -20,10 +20,10 @@ for x_axis, origin in enumerate(direction_list):
         distance = get_distance(api_key, origin, destination, "driving")
         matrix_distances_car[x_axis].append(distance)
 
-routes, distances = final_all_routes(matrix_distances_walk,
+routes, distances, times = final_all_routes(matrix_distances_walk,
                                      matrix_distances_bike,
                                      matrix_distances_car)
-print(routes)
+print(distance)
 
 # Comprobar todos los delivery points estan incluidos
 # wanrning 
