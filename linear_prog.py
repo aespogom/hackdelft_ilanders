@@ -19,7 +19,8 @@ def add_constrains(lp_problem, routes_matrix, variables, inputs):
     for delivery_point in unique_delivery_points:
         indexes_route_delivery_point = find_indexes(routes_matrix, delivery_point)
         var_names_constrain = []
-        for index, name in enumerate(variables):
+        for name in list(variables.keys()):
+            index = int(name.split("_")[1])
             if index in indexes_route_delivery_point:
                 var_names_constrain.append(variables[name])
         # Pasar una vez por cada waypoint
