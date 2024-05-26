@@ -99,5 +99,8 @@ def optimize(routes_matrix, distances_matrix, temp_matrix, inputs):
     # Check and print the result
     print("Status:", pulp.LpStatus[lp_problem.status])
     print("Optimal value:", pulp.value(lp_problem.objective))
+    final_variables = []
     for var in variables.values():
-        print(f"{var.name} =", pulp.value(var))
+        if pulp.value(var)>0:
+            final_variables.append(var.name)
+    return pulp.value(lp_problem.objective), final_variables
