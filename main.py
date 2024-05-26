@@ -1,4 +1,6 @@
+from linear_prog import optimize
 from utils import final_all_routes, get_distance, read_file, read_file_directions
+import pandas as pd
 
 # Example usage
 api_key_file = 'secret.txt'  # Replace with your actual file path
@@ -23,10 +25,12 @@ for x_axis, origin in enumerate(direction_list[0:4]):
 routes, distances, times = final_all_routes(matrix_distances_walk,
                                      matrix_distances_bike,
                                      matrix_distances_car)
-print(distance)
 
 # Comprobar todos los delivery points estan incluidos
 # wanrning 
+
+inputs = pd.read_csv("inputs.csv")
+optimize(routes, distances, times, inputs)
 
 def final_result():
     routes = [

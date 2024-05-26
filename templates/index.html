@@ -17,7 +17,30 @@
 <body>
     <div id="map"></div>
     <script>
-        let map, directionsRenderer, directionsService;
+        let map, directionsRenderer, directionsService, placesService;
+        function getRandomColor() {
+            var letters = '0123456789ABCDEF';
+            var color = '#';
+            for (var i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+
+        function addMarker(location, map, mode) {
+            if (mode === 'WALKING') {
+                iconURL="icons/walk.png"
+            } else if (mode === 'DRIVING'){
+                iconURL="icons/car.png"
+            } else {
+                iconURL="icons/bike.png"
+            }
+            const marker = new google.maps.Marker({
+                position: location,
+                map: map,
+                icon: iconURL,
+            });
+        }
 
         function initMap() {
             map = new google.maps.Map(document.getElementById('map'), {
@@ -27,6 +50,7 @@
 
             directionsRenderer = new google.maps.DirectionsRenderer();
             directionsService = new google.maps.DirectionsService();
+            // placesService = new google.maps.places.PlacesService(map);
 
             directionsRenderer.setMap(map);
 
@@ -69,6 +93,25 @@
                         if (status === 'OK') {
                             directionsRenderer = new google.maps.DirectionsRenderer();
                             directionsRenderer.setDirections(response);
+                            directionsRenderer.setOptions({
+                                polylineOptions: {
+                                strokeColor: getRandomColor()
+                                }
+                            });
+                            // placesService.getDetails({
+                            //     placeId: response.geocoded_waypoints[response.geocoded_waypoints.length-1].place_id
+                            // }, function(result, status) {
+                            //     if (status != google.maps.places.PlacesServiceStatus.OK) {
+                            //         alert(status);
+                            //     return;
+                            //     }
+                            //     // addMarker(
+                            //     //     result.geometry.location,
+                            //     //     map,
+                            //     //     response.request.travelMode
+                            //     // );
+                            // });
+                            
                             directionsRenderer.setMap(map);
                         } else {
                             window.alert('Directions request failed due to ' + status);
